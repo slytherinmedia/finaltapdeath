@@ -1,5 +1,6 @@
 {
   "name": "Final Tap - The Mortal Projection Engine",
   "description": "Calculate your biological countdown based on sins and virtues. Confess your habits to the Keeper and receive dark counsel for survival in this hell-themed life expectancy app.",
+  "version": "1.0.1",
   "requestFramePermissions": []
 }
