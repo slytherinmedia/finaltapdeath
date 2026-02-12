@@ -4,7 +4,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Final Tap - Your Time is Running Out</title>
+  <title>Final Tap | The Keeper's Mortality Engine</title>
+  
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="Final Tap | The Keeper's Mortality Engine">
+  <meta name="description" content="Calculate your biological countdown based on lifestyle sins and virtues. Confess your habits to the Keeper and receive dark counsel.">
+  <meta name="keywords" content="life expectancy, mortality calculator, health habits, longevity, devil theme, hell, final tap">
+  <meta name="author" content="Final Tap Industries">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://final-tap.netlify.app/">
+  <meta property="og:title" content="Final Tap | Calculate Your End">
+  <meta property="og:description" content="I've seen my end. Have you? Calculate your remaining life expectancy and receive dark counsel from the Keeper.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://final-tap.netlify.app/">
+  <meta property="twitter:title" content="Final Tap | Calculate Your End">
+  <meta property="twitter:description" content="Calculate your biological countdown based on sins and virtues. Confess to the Keeper.">
+  <meta property="twitter:image" content="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000">
+
+  <!-- Mobile Browser Styling -->
+  <meta name="theme-color" content="#450a0a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -13,7 +39,7 @@
     
     body {
       background-color: #0c0a09;
-      background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(127, 29, 29, 0.4)), 
+      background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(127, 29, 29, 0.45)), 
                         url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=2000');
       background-size: cover;
       background-position: center;
@@ -36,7 +62,7 @@
     }
 
     .input-hell {
-      background: rgba(28, 25, 23, 0.8);
+      background: rgba(28, 25, 23, 0.85);
       border: 1px solid #450a0a;
       color: #fca5a5;
       padding: 0.75rem;
@@ -79,6 +105,26 @@
     @keyframes reveal {
       from { opacity: 0; transform: translateY(30px) scale(0.95); }
       to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .share-toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #7f1d1d;
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 99px;
+      z-index: 1000;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      border: 1px solid #ef4444;
+      animation: slide-up 0.3s ease-out;
+    }
+
+    @keyframes slide-up {
+      from { bottom: -5rem; opacity: 0; }
+      to { bottom: 2rem; opacity: 1; }
     }
   </style>
 <script type="importmap">

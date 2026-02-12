@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { CalculationResult } from '../types';
 
 interface Props {
@@ -12,6 +12,7 @@ const ResultDisplay: React.FC<Props> = ({ result, loading, onReset }) => {
   const sinChartRef = useRef<HTMLCanvasElement>(null);
   const breakdownChartRef = useRef<HTMLCanvasElement>(null);
   const chartInstances = useRef<{ sin?: any; breakdown?: any }>({});
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     let timeoutId: number;
@@ -20,7 +21,6 @@ const ResultDisplay: React.FC<Props> = ({ result, loading, onReset }) => {
       const ChartJS = (window as any).Chart;
       if (!ChartJS || !sinChartRef.current || !breakdownChartRef.current) return;
 
-      // Force cleanup of any previous instances
       if (chartInstances.current.sin) {
         chartInstances.current.sin.destroy();
         chartInstances.current.sin = null;
@@ -31,7 +31,6 @@ const ResultDisplay: React.FC<Props> = ({ result, loading, onReset }) => {
       }
 
       try {
-        // Sin vs Virtue Chart
         chartInstances.current.sin = new ChartJS(sinChartRef.current, {
           type: 'bar',
           data: {
@@ -71,7 +70,6 @@ const ResultDisplay: React.FC<Props> = ({ result, loading, onReset }) => {
           }
         });
 
-        // Breakdown Chart
         chartInstances.current.breakdown = new ChartJS(breakdownChartRef.current, {
           type: 'pie',
           data: {
@@ -112,7 +110,6 @@ const ResultDisplay: React.FC<Props> = ({ result, loading, onReset }) => {
     };
 
     if (!loading && result) {
-      // Small delay ensures the DOM is painted and container dimensions are set
       timeoutId = window.setTimeout(initCharts, 100);
     }
 
@@ -122,6 +119,24 @@ const ResultDisplay: React.FC<Props> = ({ result, loading, onReset }) => {
       if (chartInstances.current.breakdown) chartInstances.current.breakdown.destroy();
     };
   }, [loading, result]);
+
+  const handleShare = () => {
+    const text = `💀 FINAL TAP JUDGMENT 💀\n\nName: ${result.userName || 'Unknown Sinner'}\nRemaining Time: ${result.remainingYears} Years, ${result.remainingMonths} Months, ${result.remainingDays} Days\nFinal Departure: ${result.endDate.toDateString()}\n\n"The clock is ticking. Don't be late."\nCheck your fate at FINAL TAP.`;
+    navigator.clipboard.writeText(text);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+  };
+
+  const handleDownload = () => {
+    const content = `FINAL TAP: DEATH WARRANT\n==========================\n\nSubject: ${result.userName || 'Anonymous'}\nRemaining: ${result.remainingYears}Y ${result.remainingMonths}M ${result.remainingDays}D\nDate of Departure: ${result.endDate.toDateString()}\n\nCOUNSEL FROM THE KEEPER:\n${result.advice}\n\n==========================\nThis document is a biological projection.\nProperty of the Underworld.`;
+    const element = document.createElement("a");
+    const file = new Blob([content], {type: 'text/plain'});
+    element.href = URL.createObjectURL(file);
+    element.download = `DeathWarrant_${result.userName || 'Sinner'}.txt`;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  };
 
   if (loading) {
     return (
@@ -134,6 +149,12 @@ const ResultDisplay: React.FC<Props> = ({ result, loading, onReset }) => {
 
   return (
     <div className="max-w-6xl mx-auto space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
+      {showToast && (
+        <div className="share-toast font-bold tracking-widest uppercase text-sm">
+          Fate Copied to Clipboard
+        </div>
+      )}
+
       <div className="bg-stone-950/90 border-4 border-red-900 p-6 md:p-12 rounded-[3rem] shadow-[0_0_100px_rgba(153,27,27,0.4)] relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-red-600 to-transparent"></div>
         
@@ -172,9 +193,23 @@ const ResultDisplay: React.FC<Props> = ({ result, loading, onReset }) => {
           </p>
           <div className="mt-4 w-24 h-1 bg-red-600 mx-auto rounded-full opacity-50"></div>
         </div>
+
+        <div className="flex flex-col md:flex-row gap-4 justify-center mt-12">
+          <button 
+            onClick={handleShare}
+            className="flex items-center justify-center gap-3 px-8 py-4 bg-red-900/40 hover:bg-red-900/60 border border-red-600 text-red-400 rounded-full transition-all hover:scale-105 active:scale-95 font-bold uppercase tracking-widest text-xs"
+          >
+            <i className="fas fa-share-nodes"></i> Proclaim Your Fate
+          </button>
+          <button 
+            onClick={handleDownload}
+            className="flex items-center justify-center gap-3 px-8 py-4 bg-stone-900 border border-stone-700 text-stone-400 hover:text-white hover:border-red-600 rounded-full transition-all hover:scale-105 active:scale-95 font-bold uppercase tracking-widest text-xs"
+          >
+            <i className="fas fa-file-invoice"></i> Download Death Warrant
+          </button>
+        </div>
       </div>
 
-      {/* Infernal Analytics Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="bg-stone-950/95 border-2 border-red-950/50 p-6 md:p-8 rounded-[2.5rem] h-[450px] flex flex-col shadow-2xl">
           <h3 className="text-2xl font-spooky text-red-600 mb-6 text-center tracking-widest uppercase">The Moral Balance</h3>
